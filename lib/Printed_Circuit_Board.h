@@ -34,7 +34,7 @@ namespace Lab3C {
         };
     private:
         //State of class
-        const static unsigned short Quota = 10;
+        const static unsigned short Quota = 5;
         unsigned short maxNumber;
         Contact* contacts;
         unsigned short currentNumber;
@@ -46,7 +46,7 @@ namespace Lab3C {
     public:
         printedCircuitBoard():currentNumber(0), maxNumber(Quota), contacts(new Contact[Quota]) {}; //Implementation is empty because when this constructor is called, constructor of each contact is called too
         ~printedCircuitBoard() {currentNumber = 0; delete[] contacts;};
-        printedCircuitBoard(const printedCircuitBoard&); //moving constructor
+        printedCircuitBoard(const printedCircuitBoard&);
         printedCircuitBoard(printedCircuitBoard&&) noexcept ;
         printedCircuitBoard& operator = (const printedCircuitBoard&);
         printedCircuitBoard& operator = (printedCircuitBoard&&) noexcept ;
@@ -60,7 +60,7 @@ namespace Lab3C {
         double operator() (short, short);//get length of track between contacts
         [[nodiscard]] printedCircuitBoard groupOfContacts(unsigned short) const;
         [[nodiscard]] unsigned short getCurrentNumber () const {return currentNumber;};
-        [[nodiscard]] static unsigned short getMaxNumber () {return Quota;};
+        [[nodiscard]] unsigned short getMaxNumber () const {return maxNumber;};
     };
 
     std::ostream& operator << (std::ostream &, const printedCircuitBoard::Contact &);//output for contact
