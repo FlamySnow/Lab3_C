@@ -4,7 +4,7 @@
 
 #include "Printed_Circuit_Board.h"
 
-namespace Lab3B {
+namespace Lab3C {
     printedCircuitBoard::Contact::Contact() {
         type = notStated;
         x = 0;
@@ -94,11 +94,16 @@ namespace Lab3B {
     }
 
     printedCircuitBoard& printedCircuitBoard::operator+=(const printedCircuitBoard::Contact& c) {
-        if (currentNumber == maxNumber) {
-            throw std::overflow_error("Cannot add more contacts!");
-        }
         if (!isCorrectCoordinates(c.x, c.y))
             throw std::invalid_argument("There is a contact at this place already!");
+        if (currentNumber == maxNumber) {
+            maxNumber += Quota;
+            Contact* old = contacts;
+            contacts = new Contact[maxNumber];
+            for (int i = 0; i < currentNumber; ++i)
+                contacts[i] = old[i];
+            delete[] old;
+        }
         contacts[currentNumber] = c;
         currentNumber++;
         return *this;
@@ -155,14 +160,14 @@ namespace Lab3B {
         return p;
     }
 
-    printedCircuitBoard::printedCircuitBoard(const printedCircuitBoard &p):currentNumber(p.currentNumber) {
-        contacts = new Contact[currentNumber];
+    printedCircuitBoard::printedCircuitBoard(const printedCircuitBoard &p):currentNumber(p.currentNumber), maxNumber(p.maxNumber) {
+        contacts = new Contact[maxNumber];
         for (int i = 0; i < currentNumber; ++i) {
             contacts[i] = p.contacts[i];
         }
     }
 
-    printedCircuitBoard::printedCircuitBoard(printedCircuitBoard && p) noexcept:currentNumber(p.currentNumber), contacts(p.contacts) {
+    printedCircuitBoard::printedCircuitBoard(printedCircuitBoard && p) noexcept:currentNumber(p.currentNumber), maxNumber(p.maxNumber), contacts(p.contacts) {
         p.currentNumber = 0;
         p.contacts = nullptr;
     }
@@ -170,8 +175,9 @@ namespace Lab3B {
     printedCircuitBoard& printedCircuitBoard::operator = (const printedCircuitBoard &p) {
         if (this != &p) {
             currentNumber = p.currentNumber;
+            maxNumber = p.maxNumber;
             delete[] contacts;
-            contacts = new Contact[currentNumber];
+            contacts = new Contact[maxNumber];
             for (int i = 0; i < currentNumber; ++i) {
                 contacts[i] = p.contacts[i];
             }
@@ -183,6 +189,7 @@ namespace Lab3B {
         if (this != &p) {
             delete[] contacts;
             currentNumber = p.currentNumber;
+            maxNumber = p.maxNumber;
             contacts = p.contacts;
             p.currentNumber = 0;
             p.contacts = nullptr;

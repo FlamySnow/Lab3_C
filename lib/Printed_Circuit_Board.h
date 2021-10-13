@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cmath>
 
-namespace Lab3B {
+namespace Lab3C {
 
     enum errorType {
         ok,
@@ -34,7 +34,8 @@ namespace Lab3B {
         };
     private:
         //State of class
-        const static unsigned short maxNumber = 10;
+        const static unsigned short Quota = 10;
+        unsigned short maxNumber;
         Contact* contacts;
         unsigned short currentNumber;
         //Methods
@@ -43,7 +44,7 @@ namespace Lab3B {
         [[nodiscard]] bool isCorrectNumber (short n) const {return (n < currentNumber && n >= 0);}
         bool isCorrectConnection (short c1, short c2);
     public:
-        printedCircuitBoard():currentNumber(0), contacts(new Contact[maxNumber]) {}; //Implementation is empty because when this constructor is called, constructor of each contact is called too
+        printedCircuitBoard():currentNumber(0), maxNumber(Quota), contacts(new Contact[Quota]) {}; //Implementation is empty because when this constructor is called, constructor of each contact is called too
         ~printedCircuitBoard() {currentNumber = 0; delete[] contacts;};
         printedCircuitBoard(const printedCircuitBoard&); //moving constructor
         printedCircuitBoard(printedCircuitBoard&&) noexcept ;
@@ -59,7 +60,7 @@ namespace Lab3B {
         double operator() (short, short);//get length of track between contacts
         [[nodiscard]] printedCircuitBoard groupOfContacts(unsigned short) const;
         [[nodiscard]] unsigned short getCurrentNumber () const {return currentNumber;};
-        [[nodiscard]] static unsigned short getMaxNumber () {return maxNumber;};
+        [[nodiscard]] static unsigned short getMaxNumber () {return Quota;};
     };
 
     std::ostream& operator << (std::ostream &, const printedCircuitBoard::Contact &);//output for contact
