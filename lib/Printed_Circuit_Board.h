@@ -30,11 +30,11 @@ namespace Lab3C {
             int y;
             short numberOfContact;
             Contact();
-            Contact(contactType t, int x, int y);
+            explicit Contact(contactType t, int x, int y);
         };
     private:
         //State of class
-        const static unsigned short Quota = 5;
+        const static unsigned short Quota = 1;
         unsigned short maxNumber;
         Contact* contacts;
         unsigned short currentNumber;
@@ -56,7 +56,8 @@ namespace Lab3C {
         void establishConnect (short, short);
         printedCircuitBoard& operator -- ();//prefix, deleting last contact
         const printedCircuitBoard operator -- (int);//postfix, doing the same thing
-        const Contact operator[] (short);//get contact by its number
+        const Contact& operator[] (short) const;//get contact by its number
+        Contact& operator[] (short);
         double operator() (short, short);//get length of track between contacts
         [[nodiscard]] printedCircuitBoard groupOfContacts(unsigned short) const;
         [[nodiscard]] unsigned short getCurrentNumber () const {return currentNumber;};

@@ -109,7 +109,7 @@ namespace Lab3C {
         return *this;
     }
 
-    const printedCircuitBoard::Contact printedCircuitBoard::operator[](short n) {
+    const printedCircuitBoard::Contact& printedCircuitBoard::operator[](short n) {
         if (!isCorrectNumber(n))
             throw std::invalid_argument("There is no such contact in the PCB!");
         return contacts[n];
@@ -195,5 +195,11 @@ namespace Lab3C {
             p.contacts = nullptr;
         }
         return *this;
+    }
+
+    printedCircuitBoard::Contact &printedCircuitBoard::operator[](short c) const {
+        if (!isCorrectNumber(c))
+            throw std::out_of_range("There is no such contact");
+        return contacts[c];
     }
 }
